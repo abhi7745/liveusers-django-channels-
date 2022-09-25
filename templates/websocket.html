@@ -1,0 +1,34 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script>
+                 
+  $.getJSON("https://api.ipify.org?format=json", function(data) {
+
+    user_ip = data.ip;
+
+    // WebSocket uel setting
+    let url = `ws://${window.location.host}/ws/socker-server/`
+    console.log(url)
+    
+    // allocate WebSocket
+    const chatSocket = new WebSocket(url)
+
+
+    // message receiver from channels connect
+    chatSocket.onmessage = function(e){
+        let data = JSON.parse(e.data)
+        console.log('Data', data)
+    } 
+
+
+    chatSocket.onopen = function() {
+      //console.log("onopen!");
+      // Web Socket is connected. send an initial random message.
+      chatSocket.send(JSON.stringify({
+        'message': user_ip
+      }))
+     };
+
+  }); //getJSON end
+
+  </script>
