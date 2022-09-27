@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 # importing django login athentications
 from django.contrib.auth import authenticate, login, logout
 
-from accounts.models import User_Account
+from accounts.models import TotalUsers_realtime, User_Account
 
 from django.contrib.auth.models import User
 
@@ -17,7 +17,8 @@ def index(request):
         print(request.user,'User already logged in')
         return render(request,'admin/dashboard.html')
     else:
-        return render(request,'index.html')
+        totalusers = TotalUsers_realtime.objects.all().count()
+        return render(request,'index.html', {'totalusers':totalusers})
 
 def signup(request):
 
